@@ -1,0 +1,27 @@
+this keyword in Java
+
+The this keyword refers to the current object instance.
+
+Uses of this:
+1. To refer to current class instance variables when the parameter name is same as the field name.
+2. To call another constructor in the same class.
+3. To pass the current object as an argument.
+4. To return the current object from a method.
+
+Example:
+class Example {
+    int value;
+
+    Example(int value) {
+        this.value = value;
+    }
+
+    void show() {
+        System.out.println(this.value);
+    }
+}
+
+Important points:
+- this is used only inside instance methods, constructors, and instance initializers.
+- It cannot be used in static context.
+- It helps remove ambiguity between local variables and fields.
