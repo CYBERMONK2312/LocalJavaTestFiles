@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Solution {
+public class Main {
     public static String process(String str) {
         Set<Character> xvowels = new HashSet<>(Arrays.asList('a', 'e', 'i', 'l', 'o', 't', 'v'));
 

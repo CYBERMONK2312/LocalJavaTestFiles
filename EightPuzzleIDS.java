@@ -3,16 +3,16 @@ import java.util.*;
 public class EightPuzzleIDS {
 
     // Goal state
-    static final int[] GOAL = {1, 2, 3, 4, 5, 6, 7, 8, 0};
+    static final int[] GOAL = { 1, 2, 3, 4, 5, 6, 7, 8, 0 };
 
     // Moves: Up, Down, Left, Right
-    static final int[] ROW_MOVE = {-1, 1, 0, 0};
-    static final int[] COL_MOVE = {0, 0, -1, 1};
-    static final char[] MOVE_NAME = {'U', 'D', 'L', 'R'};
+    static final int[] ROW_MOVE = { -1, 1, 0, 0 };
+    static final int[] COL_MOVE = { 0, 0, -1, 1 };
+    static final char[] MOVE_NAME = { 'U', 'D', 'L', 'R' };
 
     static int nodesGenerated = 0;
 
-    // Node of the search tree
+    // Nodes
     static class Node {
         int[] state;
         int zeroIndex;
@@ -25,7 +25,7 @@ public class EightPuzzleIDS {
         }
     }
 
-    // Generate a random puzzle
+    // Random State
     static int[] generateRandomState() {
         List<Integer> numbers = new ArrayList<>();
 
@@ -65,16 +65,14 @@ public class EightPuzzleIDS {
         return inversions;
     }
 
-    // Check whether puzzle is solvable
+    // Is solvable?
     static boolean isSolvable(int[] state) {
         int inversions = countInversions(state);
 
-        // For 3 x 3 puzzle:
-        // Even number of inversions => solvable
         return inversions % 2 == 0;
     }
 
-    // Check whether state is goal
+    // Goal State?
     static boolean isGoal(int[] state) {
         return Arrays.equals(state, GOAL);
     }
@@ -84,12 +82,7 @@ public class EightPuzzleIDS {
         return Arrays.toString(state);
     }
 
-    /*
-     * Depth Limited Search
-     *
-     * Returns solution path if found.
-     * Returns null otherwise.
-     */
+    // Depth Limited Search (DLS) i.e. fixed dexpth
     static String depthLimitedSearch(
             int[] state,
             int zeroIndex,
@@ -126,10 +119,10 @@ public class EightPuzzleIDS {
 
             int newZeroIndex = newRow * 3 + newCol;
 
-            // Create new state
+            // clone
             int[] newState = state.clone();
 
-            // Move tile into blank space
+            // tile swap
             newState[zeroIndex] = newState[newZeroIndex];
             newState[newZeroIndex] = 0;
 
@@ -145,8 +138,7 @@ public class EightPuzzleIDS {
                     newZeroIndex,
                     depth - 1,
                     path + MOVE_NAME[i],
-                    visited
-            );
+                    visited);
 
             if (result != null) {
                 return result;
@@ -158,7 +150,6 @@ public class EightPuzzleIDS {
         return null;
     }
 
-    // Iterative Deepening Search
     static String iterativeDeepeningSearch(int[] initialState) {
 
         int zeroIndex = 0;
@@ -171,8 +162,9 @@ public class EightPuzzleIDS {
         }
 
         // Increase depth gradually
-        for (int depth = 0; ; depth++) {
+        for (int depth = 0;; depth++) {
 
+            nodesGenerated = 0;
             System.out.println("Searching at depth: " + depth);
 
             Set<String> visited = new HashSet<>();
@@ -182,8 +174,10 @@ public class EightPuzzleIDS {
                     zeroIndex,
                     depth,
                     "",
-                    visited
-            );
+                    visited);
+
+            System.out.println("Nodes generated at depth " + depth + ": " + nodesGenerated);
+            System.out.println();
 
             if (result != null) {
                 return result;
@@ -227,6 +221,7 @@ public class EightPuzzleIDS {
 
         System.out.println("Moves: " + solution);
         System.out.println("Number of moves: " + solution.length());
+        System.out.println();
 
         for (int step = 0; step < solution.length(); step++) {
 
@@ -268,7 +263,7 @@ public class EightPuzzleIDS {
 
         int attempts = 0;
 
-        // Generate until solvable state is obtained
+        // Generate until solvable state 
         while (true) {
 
             attempts++;
@@ -291,6 +286,7 @@ public class EightPuzzleIDS {
         }
 
         System.out.println("\nNumber of attempts: " + attempts);
+        System.out.println();
 
         // Solve using IDS
         nodesGenerated = 0;
@@ -301,7 +297,7 @@ public class EightPuzzleIDS {
 
         long endTime = System.currentTimeMillis();
 
-        // Print solution
+        // Print soln
         printSolution(initialState, solution);
 
         System.out.println("Nodes generated: " + nodesGenerated);
